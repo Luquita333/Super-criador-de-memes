@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criador de Memes</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1e1e2f, #2c2c54);
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+input[type="text"], input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    padding: 12px 20px;
+    background: #ff4757;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ff6b81;
+}
+
+canvas {
+    margin-top: 20px;
+    max-width: 100%;
+    border-radius: 10px;
+}
+</style>
+</head>
+<body>
+
+<h1>🔥 Criador de Memes 🔥</h1>
+
+<div class="container">
+    <input type="file" id="imageInput" accept="image/*">
+    <input type="text" id="topText" placeholder="Texto de cima">
+    <input type="text" id="bottomText" placeholder="Texto de baixo">
+    <button onclick="generateMeme()">Gerar Meme</button>
+    <br>
+    <button onclick="downloadMeme()">Baixar Meme</button>
+    <canvas id="memeCanvas"></canvas>
+</div>
+
+<script>
+const canvas = document.getElementById("memeCanvas");
+const ctx = canvas.getContext("2d");
+let image = new Image();
+
+document.getElementById("imageInput").addEventListener("change", function(e) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        image.onload = function() {
+            canvas.width = image.width;
+            canvas.height = image.height;
+            ctx.drawImage(image, 0, 0);
+        }
+        image.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);
+});
+
+function generateMeme() {
+    const topText = document.getElementById("topText").value.toUpperCase();
+    const bottomText = document.getElementById("bottomText").value.toUpperCase();
+
+    ctx.drawImage(image, 0, 0);
+
+    ctx.font = "bold 40px Impact";
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 3;
+    ctx.textAlign = "center";
+
+    ctx.fillText(topText, canvas.width / 2, 50);
+    ctx.strokeText(topText, canvas.width / 2, 50);
+
+    ctx.fillText(bottomText, canvas.width / 2, canvas.height - 20);
+    ctx.strokeText(bottomText, canvas.width / 2, canvas.height - 20);
+}
+
+function downloadMeme() {
+    const link = document.createElement("a");
+    link.download = "meme.png";
+    link.href = canvas.toDataURL();
+    link.click();
+}
+</script>
+
+</body>
+</html>bola perfeita manual do mundo
